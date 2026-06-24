@@ -1,0 +1,49 @@
+team,group,confederation,confirmed
+Mexico,A,CONCACAF,True
+South Korea,A,AFC,True
+South Africa,A,CAF,True
+Czechia,A,UEFA,True
+Canada,B,CONCACAF,True
+Switzerland,B,UEFA,True
+Qatar,B,AFC,True
+Bosnia and Herzegovina,B,UEFA,True
+Brazil,C,CONMEBOL,True
+Morocco,C,CAF,True
+Scotland,C,UEFA,True
+Haiti,C,CONCACAF,True
+USA,D,CONCACAF,True
+Paraguay,D,CONMEBOL,True
+Australia,D,AFC,True
+Turkey,D,UEFA,True
+Germany,E,UEFA,True
+Ecuador,E,CONMEBOL,True
+Ivory Coast,E,CAF,True
+Curacao,E,CONCACAF,True
+Netherlands,F,UEFA,True
+Japan,F,AFC,True
+Tunisia,F,CAF,True
+Sweden,F,UEFA,True
+Belgium,G,UEFA,True
+Iran,G,AFC,True
+Egypt,G,CAF,True
+New Zealand,G,OFC,True
+Spain,H,UEFA,True
+Uruguay,H,CONMEBOL,True
+Saudi Arabia,H,AFC,True
+Cape Verde,H,CAF,True
+France,I,UEFA,True
+Senegal,I,CAF,True
+Norway,I,UEFA,True
+Iraq,I,AFC,True
+Argentina,J,CONMEBOL,True
+Austria,J,UEFA,True
+Algeria,J,CAF,True
+Jordan,J,AFC,True
+Portugal,K,UEFA,True
+Colombia,K,CONMEBOL,True
+Uzbekistan,K,AFC,True
+DR Congo,K,CAF,True
+England,L,UEFA,True
+Croatia,L,UEFA,True
+Panama,L,CONCACAF,True
+Ghana,L,CAF,True

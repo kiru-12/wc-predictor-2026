@@ -1,0 +1,15 @@
+pandas
+numpy
+scipy
+scikit-learn
+statsmodels
+soccerdata
+statsbombpy
+requests
+lxml
+plotly
+streamlit
+pytest
+python-dotenv
+joblib
+tqdm
