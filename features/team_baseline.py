@@ -11,13 +11,9 @@ Computes a per-team feature set from international match results:
   5. ``wc_qualifier_gd``    – Net goal difference across all WC-qualifier matches
                               in the cycle.
 
-Combined score
---------------
-``baseline_score`` is the **equal-weight mean of z-scored sub-features**.
-This is a deliberately transparent, assumption-free aggregation intended
-for exploratory use and as an initial ranking signal.  All feature weights
-will be replaced by values learned / calibrated during backtesting (see
-``models/`` layer).  No hardcoded blend constants are used here.
+All sub-features are returned as individual columns.  The model layer
+(``models/``) learns how to weight them — no composite score is computed
+here.
 
 Point-in-time guarantee
 -----------------------
@@ -501,15 +497,6 @@ def build_team_baseline(
 ) -> pd.DataFrame:
     """Build a one-row-per-team baseline feature DataFrame.
 
-    Combined score
-    --------------
-    ``baseline_score`` is the **equal-weight mean of z-scored sub-features**:
-    ``elo_national``, ``form_score``, ``unbeaten_streak``,
-    ``wc_qualifier_gd``, ``continental_winner``.  Columns with NaN for a
-    specific team contribute 0 to that team's z-score mean (i.e. NaN
-    sub-features are skipped, not propagated).  This temporary aggregation
-    should be superseded by the learned-weight model in ``models/``.
-
     Point-in-time guarantee: ``as_of`` is applied as an exclusive upper-
     bound cutoff to every sub-feature computation, so no match played on
     or after ``as_of`` influences the output.
@@ -537,7 +524,7 @@ def build_team_baseline(
     -------
     pd.DataFrame
         Columns: ``team, elo_national, form_score, unbeaten_streak,
-        wc_qualifier_gd, continental_winner, baseline_score``.
+        wc_qualifier_gd, continental_winner``.
     """
     as_of_ts = pd.Timestamp(as_of)
 
@@ -576,25 +563,6 @@ def build_team_baseline(
         )
 
     df = pd.DataFrame(rows)
-
-    # --- Z-score each sub-feature and combine ----------------------------------
-    feature_cols = ["elo_national", "form_score", "unbeaten_streak",
-                    "wc_qualifier_gd", "continental_winner"]
-
-    z_parts = []
-    for col in feature_cols:
-        mu = df[col].mean()
-        sigma = df[col].std(ddof=0)
-        if sigma == 0 or pd.isna(sigma):
-            z = pd.Series(0.0, index=df.index)
-        else:
-            z = (df[col] - mu) / sigma
-        z_parts.append(z.rename(col))
-
-    z_df = pd.concat(z_parts, axis=1)
-    # skipna=True: NaN sub-features do not propagate; they are excluded
-    # from the mean for that team.
-    df["baseline_score"] = z_df.mean(axis=1, skipna=True)
 
     # --- Save ------------------------------------------------------------------
     if output_path is None:

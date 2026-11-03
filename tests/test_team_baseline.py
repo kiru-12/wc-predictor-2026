@@ -352,7 +352,7 @@ class TestBuildTeamBaseline:
         assert len(df) == 3
         expected_cols = {
             "team", "elo_national", "form_score", "unbeaten_streak",
-            "wc_qualifier_gd", "continental_winner", "baseline_score",
+            "wc_qualifier_gd", "continental_winner",
         }
         assert expected_cols.issubset(set(df.columns))
 
@@ -367,26 +367,26 @@ class TestBuildTeamBaseline:
         saved = pd.read_csv(out)
         assert len(saved) == 2
 
-    def test_alpha_highest_baseline(self, results, tmp_path):
-        """Alpha is the strongest team in the fixture so must rank first."""
+    def test_alpha_highest_elo(self, results, tmp_path):
+        """Alpha is the strongest team in the fixture so must rank first by ELO."""
         teams = ["Alpha", "Beta", "Gamma"]
         df = build_team_baseline(
             results, teams, as_of="2022-11-01",
             wc_cycle_start=2018, wc_cycle_end=2021,
             output_path=tmp_path / "baseline.csv",
         )
-        best = df.sort_values("baseline_score", ascending=False).iloc[0]["team"]
+        best = df.sort_values("elo_national", ascending=False).iloc[0]["team"]
         assert best == "Alpha"
 
-    def test_baseline_score_no_nan(self, results, tmp_path):
-        """baseline_score must be finite for every team in the fixture."""
+    def test_elo_no_nan(self, results, tmp_path):
+        """elo_national must be finite for every team in the fixture."""
         teams = ["Alpha", "Beta", "Gamma"]
         df = build_team_baseline(
             results, teams, as_of="2022-11-01",
             wc_cycle_start=2018, wc_cycle_end=2021,
             output_path=tmp_path / "baseline.csv",
         )
-        assert df["baseline_score"].notna().all()
+        assert df["elo_national"].notna().all()
 
     def test_default_output_path_created(self, results, tmp_path, monkeypatch):
         """Default output path (PROCESSED_DIR) is created and written."""
